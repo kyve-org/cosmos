@@ -33,7 +33,7 @@ jobs:
           path: ./out/cosmos-macos
       - uses: actions/upload-artifact@v3
         with:
-          name: kyve-cosmos-win.exe
+          name: kyve-cosmos-win
           path: ./out/cosmos-win.exe
 
   docker:
