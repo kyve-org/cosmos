@@ -25,16 +25,16 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: kyve-cosmos-linux
-          path: ./out/cosmos-linux
+          name: checksum.txt
+          path: ./out/checksum.txt
       - uses: actions/upload-artifact@v3
         with:
-          name: kyve-cosmos-macos
-          path: ./out/cosmos-macos
+          name: kyve-linux
+          path: ./out/kyve-linux
       - uses: actions/upload-artifact@v3
         with:
-          name: kyve-cosmos-win
-          path: ./out/cosmos-win.exe
+          name: kyve-macos
+          path: ./out/kyve-macos
 
   docker:
     name: Build and publish Docker container.
@@ -64,7 +64,7 @@ jobs:
       - name: Install yarn.
         run: npm install -g yarn
       - name: Install dependencies.
-        run: yarn install
+        run: yarn add webhook-discord
 
       - name: Run script.
         run: DISCORD=${{ secrets.DISCORD }} VERSION=${GITHUB_REF#refs/tags/} node .github/webhook.js

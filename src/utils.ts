@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios";
-import { createHash } from "crypto";
-import { OUT_OF_RANGE, Signature } from "./types";
+import axios, { AxiosResponse } from 'axios';
+import { createHash } from 'crypto';
+import { OUT_OF_RANGE, Signature } from './types';
 
 export function isHeightOutOfRange(err: any): boolean {
   if (err.isAxiosError) {
@@ -63,10 +63,10 @@ async function call<T>(endpoint: string, signature: Signature): Promise<T> {
   const { data } = await axios.get<T>(endpoint, {
     headers: {
       Signature: signature.signature,
-      "Public-Key": signature.pubKey,
-      "Pool-ID": signature.poolId,
+      'Public-Key': signature.pubKey,
+      'Pool-ID': signature.poolId,
       Timestamp: signature.timestamp,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
 
@@ -75,8 +75,8 @@ async function call<T>(endpoint: string, signature: Signature): Promise<T> {
 
 function parseEncodedTx(input: string): string {
   const txBytes = new Uint8Array(
-    createHash("sha256").update(Buffer.from(input, "base64")).digest()
+    createHash('sha256').update(Buffer.from(input, 'base64')).digest()
   );
 
-  return Buffer.from(txBytes.slice(0, 32)).toString("hex").toUpperCase();
+  return Buffer.from(txBytes.slice(0, 32)).toString('hex').toUpperCase();
 }
