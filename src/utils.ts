@@ -18,17 +18,17 @@ export function isHeightOutOfRange(err: any): boolean {
 export async function fetchBlock(
   endpoint: string,
   height: number,
-  signature: Signature
+  headers: any
 ): Promise<any> {
   const res = await call<any>(
     `${endpoint}/cosmos/base/tendermint/v1beta1/blocks/${height}`,
-    signature
+    headers
   );
 
   const txs = await fetchTransactions(
     endpoint,
     res.block.data.txs.map(parseEncodedTx),
-    signature
+    headers
   );
 
   return {
@@ -43,14 +43,14 @@ export async function fetchBlock(
 async function fetchTransactions(
   endpoint: string,
   hashes: string[],
-  signature: Signature
+  headers: any
 ): Promise<any[]> {
   const res = [];
 
   for (const hash of hashes) {
     const { tx_response } = await call<any>(
       `${endpoint}/cosmos/tx/v1beta1/txs/${hash}`,
-      signature
+      headers
     );
 
     res.push(tx_response);
@@ -59,15 +59,9 @@ async function fetchTransactions(
   return res;
 }
 
-async function call<T>(endpoint: string, signature: Signature): Promise<T> {
+async function call<T>(endpoint: string, headers: any): Promise<T> {
   const { data } = await axios.get<T>(endpoint, {
-    headers: {
-      Signature: signature.signature,
-      'Public-Key': signature.pubKey,
-      'Pool-ID': signature.poolId,
-      Timestamp: signature.timestamp,
-      'Content-Type': 'application/json',
-    },
+    headers,
   });
 
   return data;
