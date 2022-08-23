@@ -27,7 +27,7 @@ export default class Cosmos implements IRuntime {
   }
 
   public async formatValue(value: any): Promise<string> {
-    return value.hash;
+    return value.header.time;
   }
 
   private async generateCoinbaseCloudHeaders(core: Node): Promise<any> {
